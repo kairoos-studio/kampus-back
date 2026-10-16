@@ -20,7 +20,13 @@ npm run lint
 echo "==> testes"
 npm test
 
-echo "==> ficheiros versionados inalterados"
-git -C "$RAIZ" diff --exit-code --stat
+# Só quando há repositório git; a verificação independente corre numa cópia sem .git
+# e faz esta comparação por fora.
+if git -C "$RAIZ" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "==> ficheiros versionados inalterados"
+  git -C "$RAIZ" diff --exit-code --stat
+else
+  echo "==> sem .git: comparação de ficheiros versionados feita pela verificação externa"
+fi
 
 echo "OK"
