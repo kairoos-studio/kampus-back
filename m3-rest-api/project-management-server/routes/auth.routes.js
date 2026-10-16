@@ -44,6 +44,9 @@ router.post('/signup', (req,res)=>{
 
             return User.create({email, password: hashedPassword, firstName, lastName, role, cohort, campus, manager, teacher, isStudent, task});
         }).then((createdUser)=>{
+            // Duplicado: a resposta 400 já foi enviada acima.
+            if(!createdUser) return;
+
             const {email, firstName, _id, } = createdUser;
 
             const user = {email, firstName, _id};

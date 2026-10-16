@@ -55,12 +55,14 @@ test("signup cria utilizador", async () => {
   userId = res.body.user._id;
 });
 
-// Bug conhecido do código de 2023 (não corrigido nesta fase): com email repetido a rota
-// responde 400 mas depois tenta responder 500 no .catch, e a rejeição sem tratamento
-// derruba o processo do servidor.
-test("signup recusa email repetido", { skip: "bug conhecido: ERR_HTTP_HEADERS_SENT em auth.routes.js" }, async () => {
+test("signup recusa email repetido e a API continua a responder", async () => {
   const res = await request.post("/auth/signup").send(student);
   assert.equal(res.status, 400);
+  assert.equal(res.body.message, "User already exists");
+  // Dá tempo a uma eventual rejeição sem tratamento (antes derrubava o processo).
+  await new Promise((r) => setTimeout(r, 100));
+  const ping = await request.get("/api");
+  assert.equal(ping.status, 200);
 });
 
 test("login devolve token e /auth/verify aceita-o", async () => {
