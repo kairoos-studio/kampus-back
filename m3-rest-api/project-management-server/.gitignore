@@ -21,3 +21,6 @@ ehthumbs.db
 
 # VS Code
 .vscode/*
+
+# Dados do MongoDB local (npm run db:local)
+.mongo-data/
