@@ -5,7 +5,7 @@ const fs = require("fs");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
 const port = Number(process.env.MONGO_PORT || 27017);
-const dbPath = path.join(__dirname, "..", ".mongo-data");
+const dbPath = process.env.MONGO_DBPATH || path.join(__dirname, "..", ".mongo-data");
 
 (async () => {
   fs.mkdirSync(dbPath, { recursive: true });
