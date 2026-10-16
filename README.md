@@ -16,7 +16,7 @@ npm ci
 cp .env.example .env        # trocar TOKEN_SECRET por um valor aleatório local
 
 npm run db:local            # terminal 1: MongoDB em mongodb://127.0.0.1:27017
-npm run seed                # apaga e volta a criar os dados fictícios (só aceita MongoDB local)
+npm run seed                # apaga e volta a criar os dados fictícios (só MongoDB local, base kampus*)
 npm start                   # terminal 2: API em http://localhost:5005
 ```
 
@@ -30,8 +30,11 @@ Contas criadas pelo seed (todas com a palavra-passe `Kampus123`, emails `@exampl
 Cada aluno fica com 3 tarefas e 2 notas de exemplo. Os cargos do staff não existem no código
 original e ficam como `[POR CONFIRMAR: cargo]`.
 
-O seed recusa qualquer `MONGODB_URI` que não seja `mongodb://` em `127.0.0.1`, `localhost` ou `[::1]`,
-para nunca apagar dados de outra base.
+Para nunca apagar dados de outra base, o seed recusa, antes de ligar, qualquer `MONGODB_URI` que não
+seja `mongodb://` em `127.0.0.1`, `localhost` ou `[::1]`, ou cuja base não se chame `kampus` ou
+`kampus-<sufixo>`. Depois de ligar, recusa também se a base tiver coleções que não sejam
+`users`, `tasks` ou `notes`. `SEED_DATE` (ISO, opcional) fixa a data base das tarefas e notas
+(usado para prints reprodutíveis).
 
 ### Variáveis de ambiente (`.env`)
 
